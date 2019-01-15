@@ -1,0 +1,24 @@
+{
+  "name": "pbb",
+  "version": "1.0.0",
+  "description": "proBasketball front-end webapp",
+  "main": "server.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arashbabaie6/PBB.git"
+  },
+  "author": "arashbabaie6",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arashbabaie6/PBB/issues"
+  },
+  "homepage": "https://github.com/arashbabaie6/PBB#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.4",
+    "mongoose-timestamp": "^0.6.0",
+    "nodemon": "^1.18.9"
+  }
+}
