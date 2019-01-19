@@ -1,13 +1,17 @@
 const express = require('express');
 const app = express();
+const cors = require('cors')
 const config = require('./config');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const standing = require('./routes/standing');
+const scoreboard = require('./routes/scoreboard')
 
+app.use(cors())
 app.use(bodyParser.json());
 
-app.use('/standing', standing)
+app.use('/standing', standing);
+app.use('/scoreboard',scoreboard )
 
 app.listen(config.PORT,()=>{
     mongoose.connect(config.MONGODB_URI, {useNewUrlParser: true});

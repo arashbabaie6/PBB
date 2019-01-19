@@ -15,8 +15,11 @@
   },
   "homepage": "https://github.com/arashbabaie6/PBB#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
+    "moment": "^2.23.0",
     "mongoose": "^5.4.4",
     "mongoose-timestamp": "^0.6.0",
     "nodemon": "^1.18.9"
