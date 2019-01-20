@@ -5,36 +5,36 @@ var moment = require("moment");
 var jalaali = require("moment-jalaali");
 
 const teamNameTable = {
-  MIL: { city: "میلواکی", title: "باکس" },
-  GSW: { city: "گلدن استیت", title: "واریورز" },
-  TOR: { city: "تورنتو", title: "رپتورز" },
-  DEN: { city: "دنور", title: "ناگتس" },
-  IND: { city: "ایندیانا", title: "پیسرز" },
-  POR: { city: "پرتلند", title: "تریل بلیزرز" },
-  PHI: { city: "فیلادلفیا", title: "سونتی‌ سیکسرز" },
-  OKC: { city: "اکلاهما", title: "سیتی تاندر" },
-  BOS: { city: "بوستون", title: "سلتیکس" },
-  SAS: { city: "سن آنتونیو", title: "اسپرز" },
-  HOU: { city: "هیوستون", title: "راکتس" },
-  BKN: { city: "بروکلین", title: "نتس" },
-  UTA: { city: "یوتا", title: "جاز" },
-  MIA: { city: "میامی", title: "هیت" },
-  LAL: { city: "لس آنجلس", title: "لیکرز" },
-  CHA: { city: "شارلوت", title: "هورنتز" },
-  LAC: { city: "لس آنجلس", title: "کلیپرز" },
-  DET: { city: "دیترویت", title: "پیستونز" },
-  SAC: { city: "ساکرامنتو", title: "کینگز" },
-  WAS: { city: "واشینگتن", title: "ویزاردز" },
-  MIN: { city: "مینه‌ سوتا", title: "تیمبرولوز" },
-  ORL: { city: "اورلندو", title: "مجیک" },
-  NOP: { city: "نیو اورلینز", title: "پلیکانز" },
   ATL: { city: "آتلانتا", title: "هاکس" },
-  DAL: { city: "دالاس", title: "ماوریکس" },
-  NYK: { city: "نیویورک", title: "نیکس" },
-  MEM: { city: "ممفیس", title: "گریزلیز" },
+  BKN: { city: "بروکلین", title: "نتس" },
+  BOS: { city: "بوستون", title: "سلتیکس" },
+  CHA: { city: "شارلوت", title: "هورنتز" },
   CHI: { city: "شیکاگو", title: "بولز" },
+  CLE: { city: "کلیولند", title: "کاوالیرز" },
+  DAL: { city: "دالاس", title: "ماوریکس" },
+  DEN: { city: "دنور", title: "ناگتس" },
+  DET: { city: "دیترویت", title: "پیستونز" },
+  GSW: { city: "گلدن استیت", title: "واریورز" },
+  HOU: { city: "هیوستون", title: "راکتس" },
+  IND: { city: "ایندیانا", title: "پیسرز" },
+  LAC: { city: "لس آنجلس", title: "کلیپرز" },
+  LAL: { city: "لس آنجلس", title: "لیکرز" },
+  MEM: { city: "ممفیس", title: "گریزلیز" },
+  MIA: { city: "میامی", title: "هیت" },
+  MIL: { city: "میلواکی", title: "باکس" },
+  MIN: { city: "مینه‌ سوتا", title: "تیمبرولوز" },
+  NOP: { city: "نیو اورلینز", title: "پلیکانز" },
+  NYK: { city: "نیویورک", title: "نیکس" },
+  OKC: { city: "اکلاهما", title: "سیتی تاندر" },
+  ORL: { city: "اورلندو", title: "مجیک" },
+  PHI: { city: "فیلادلفیا", title: "سونتی‌ سیکسرز" },
   PHX: { city: "فینیکس", title: "سانز" },
-  CLE: { city: "کلیولند", title: "کاوالیرز" }
+  POR: { city: "پرتلند", title: "تریل بلیزرز" },
+  SAC: { city: "ساکرامنتو", title: "کینگز" },
+  SAS: { city: "سن آنتونیو", title: "اسپرز" },
+  TOR: { city: "تورنتو", title: "رپتورز" },
+  UTA: { city: "یوتا", title: "جاز" },
+  WAS: { city: "واشینگتن", title: "ویزاردز" },
 };
 moment.updateLocale("en", {
   meridiem: function(hour) {
@@ -51,6 +51,34 @@ moment.updateLocale("en", {
     }
   }
 });
+function boxscoreModify(obj, date) {
+  let responseOBJ = obj;
+  responseOBJ.sports_content.games.game.forEach(e => {
+    delete e.game_url;
+    delete e.home_start_date;
+    delete e.home_start_time;
+    delete e.visitor_start_date;
+    delete e.visitor_start_time;
+    delete e.previewAvailable;
+    delete e.recapAvailable;
+    delete e.notebookAvailable;
+    delete e.ticket;
+    delete e.lp;
+    delete e.dl;
+    delete e.broadcasters;
+    e.date_ir = jalaali(date + "T" + e.time)
+      .add(8, "hours")
+      .add(30, "minutes")
+      .format("jYYYY,jMM,jDD");
+    e.time_ir = jalaali(date + "T" + e.time)
+      .add(8, "hours")
+      .add(30, "minutes")
+      .format("hh:mm a");
+    e.home.name_persian = teamNameTable[e.home.abbreviation];
+    e.visitor.name_persian = teamNameTable[e.visitor.abbreviation];
+  });
+  return responseOBJ;
+}
 
 router.get("/", (req, res) => {
   let yesterdayGames = moment()
@@ -62,31 +90,10 @@ router.get("/", (req, res) => {
     )
     .then(response => {
       let responseOBJ = response.data;
-      responseOBJ.sports_content.games.game.forEach(e => {
-        delete e.game_url;
-        delete e.home_start_date;
-        delete e.home_start_time;
-        delete e.visitor_start_date;
-        delete e.visitor_start_time;
-        delete e.previewAvailable;
-        delete e.recapAvailable;
-        delete e.notebookAvailable;
-        delete e.ticket;
-        delete e.lp;
-        delete e.dl;
-        delete e.broadcasters;
-        e.date_ir = jalaali(yesterdayGames + "T" + e.time)
-          .add(8, "hours")
-          .add(30, "minutes")
-          .format("jYYYY,jMM,jDD");
-        e.time_ir = jalaali(yesterdayGames + "T" + e.time)
-          .add(8, "hours")
-          .add(30, "minutes")
-          .format("hh:mm a");
-        e.home.name_persian = teamNameTable[e.home.abbreviation];
-        e.visitor.name_persian = teamNameTable[e.visitor.abbreviation];
-      });
+      responseOBJ = boxscoreModify(responseOBJ, yesterdayGames)
       res.json(responseOBJ);
+    }).catch(function (error) {
+      console.log(error);
     });
 });
 
@@ -100,30 +107,7 @@ router.get("/decDay/:date", (req, res) => {
     )
     .then(response => {
       let responseOBJ = response.data;
-      responseOBJ.sports_content.games.game.forEach(e => {
-        delete e.game_url;
-        delete e.home_start_date;
-        delete e.home_start_time;
-        delete e.visitor_start_date;
-        delete e.visitor_start_time;
-        delete e.previewAvailable;
-        delete e.recapAvailable;
-        delete e.notebookAvailable;
-        delete e.ticket;
-        delete e.lp;
-        delete e.dl;
-        delete e.broadcasters;
-        e.date_ir = jalaali(preday + "T" + e.time)
-          .add(8, "hours")
-          .add(30, "minutes")
-          .format("jYYYY,jMM,jDD");
-        e.time_ir = jalaali(preday + "T" + e.time)
-          .add(8, "hours")
-          .add(30, "minutes")
-          .format("hh:mm a");
-        e.home.name_persian = teamNameTable[e.home.abbreviation];
-        e.visitor.name_persian = teamNameTable[e.visitor.abbreviation];
-      });
+      responseOBJ = boxscoreModify(responseOBJ, preday)
       res.json(responseOBJ);
     });
 });
@@ -138,30 +122,7 @@ router.get("/incDay/:date", (req, res) => {
     )
     .then(response => {
       let responseOBJ = response.data;
-      responseOBJ.sports_content.games.game.forEach(e => {
-        delete e.game_url;
-        delete e.home_start_date;
-        delete e.home_start_time;
-        delete e.visitor_start_date;
-        delete e.visitor_start_time;
-        delete e.previewAvailable;
-        delete e.recapAvailable;
-        delete e.notebookAvailable;
-        delete e.ticket;
-        delete e.lp;
-        delete e.dl;
-        delete e.broadcasters;
-        e.date_ir = jalaali(incday + "T" + e.time)
-          .add(8, "hours")
-          .add(30, "minutes")
-          .format("jYYYY,jMM,jDD");
-        e.time_ir = jalaali(incday + "T" + e.time)
-          .add(8, "hours")
-          .add(30, "minutes")
-          .format("hh:mm a");
-        e.home.name_persian = teamNameTable[e.home.abbreviation];
-        e.visitor.name_persian = teamNameTable[e.visitor.abbreviation];
-      });
+      responseOBJ = boxscoreModify(responseOBJ, incday)
       res.json(responseOBJ);
     });
 });
