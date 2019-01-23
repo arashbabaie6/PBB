@@ -22,19 +22,21 @@ router.get("/:statCategory/Player", (req, res) => {
     });
 });
 router.get("/:statCategory/Team", (req, res) => {
-    axios
-      .get(
-        `http://stats.nba.com/stats/leaderstiles/?leagueId=00&season=2018-19&seasonType=Regular+Season&stat=${
-          req.params.statCategory
-        }&playerOrTeam=Team&gameScope=Season&playerScope=All+Players`
-      )
-      .then(response => {
-        let responseClient = modifyLeaugeLeaders(response.data);
-        res.json(responseClient);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  });
+  axios
+    .get(
+      `http://stats.nba.com/stats/leaderstiles/?leagueId=00&season=2018-19&seasonType=Regular+Season&stat=${
+        req.params.statCategory
+      }&playerOrTeam=Team&gameScope=Season&playerScope=All+Players`
+    )
+    .then(response => {
+      let responseClient = modifyLeaugeLeaders(response.data);
+      res.json(responseClient);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
 
 module.exports = router;
+
+/*http://nbasense.com/nba-api/Stats/Stats/Homepage/LeadersTiles*/

@@ -18,8 +18,9 @@ router.get("/main", (req, res) => {
       let responseObj = modifyStanding(response.data);
       res.json(responseObj);
     })
-    .catch(err =>{
-        console.log(err)
-    })
+    .catch(err => {
+      console.log(err);
+    });
 });
 module.exports = router;
+/*http://nbasense.com/nba-api/Data/Cms/Standings/ConferenceStanding*/

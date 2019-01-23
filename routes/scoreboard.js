@@ -3,6 +3,7 @@ const router = express.Router();
 const axios = require("axios");
 var moment = require("moment");
 var jalaali = require("moment-jalaali");
+/*http://nbasense.com/nba-api/Data/Cms/Scores/Scoreboard*/
 
 const teamNameTable = {
   ATL: { city: "آتلانتا", title: "هاکس" },
@@ -34,7 +35,7 @@ const teamNameTable = {
   SAS: { city: "سن آنتونیو", title: "اسپرز" },
   TOR: { city: "تورنتو", title: "رپتورز" },
   UTA: { city: "یوتا", title: "جاز" },
-  WAS: { city: "واشینگتن", title: "ویزاردز" },
+  WAS: { city: "واشینگتن", title: "ویزاردز" }
 };
 moment.updateLocale("en", {
   meridiem: function(hour) {
@@ -90,9 +91,10 @@ router.get("/", (req, res) => {
     )
     .then(response => {
       let responseOBJ = response.data;
-      responseOBJ = boxscoreModify(responseOBJ, yesterdayGames)
+      responseOBJ = boxscoreModify(responseOBJ, yesterdayGames);
       res.json(responseOBJ);
-    }).catch(function (error) {
+    })
+    .catch(function(error) {
       console.log(error);
     });
 });
@@ -107,7 +109,7 @@ router.get("/decDay/:date", (req, res) => {
     )
     .then(response => {
       let responseOBJ = response.data;
-      responseOBJ = boxscoreModify(responseOBJ, preday)
+      responseOBJ = boxscoreModify(responseOBJ, preday);
       res.json(responseOBJ);
     });
 });
@@ -122,9 +124,10 @@ router.get("/incDay/:date", (req, res) => {
     )
     .then(response => {
       let responseOBJ = response.data;
-      responseOBJ = boxscoreModify(responseOBJ, incday)
+      responseOBJ = boxscoreModify(responseOBJ, incday);
       res.json(responseOBJ);
     });
 });
 
 module.exports = router;
+/*http://nbasense.com/nba-api/Data/Cms/Scores/Scoreboard */
